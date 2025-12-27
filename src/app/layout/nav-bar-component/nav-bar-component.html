@@ -1,0 +1,40 @@
+<!-- <nav class="navbar navbar-expand-lg navbar-light text-white bg-dark"> -->
+
+<!-- <a *ngIf="sideBarService.toggled()" class="btn btn-outline-secondary mr-1" (click)="toggleSidebar()">
+    <i class="fa fa-bars"></i>
+  </a>
+  <a class="navbar-brand text-white">Mock</a>
+  <a class="navbar-brand text-white">
+    {{ currentDate }}
+    {{ currentTime }}
+    <a class="mr-2 ml-2">
+      <i class="fa fa-power-off"></i>
+    </a>
+  </a> -->
+<!-- <a class="navbar-brand">
+    <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top"
+      alt="">
+    Bootstrap
+  </a> -->
+<!-- </nav> -->
+<nav class="navbar navbar-light text-white bg-dark ">
+  <a class="navbar-brand text-white">
+    <a *ngIf="sideBarService.toggled()" class="btn btn-outline-secondary" (click)="toggleSidebar()">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a class="navbar-brand"> <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30"
+        height="30" class="ml-2 d-inline-block align-top" alt="">
+    </a>
+
+  </a>
+  <a class="navbar-brand text-white">Mock</a>
+  <a class="navbar-brand text-white">
+    {{ presentDate() }}
+    {{ presentTime() }}
+    <a class="mr-2 ml-2">
+      <i class="fa fa-power-off"></i>
+    </a>
+  </a>
+
+
+</nav>

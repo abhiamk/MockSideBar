@@ -1,4 +1,15 @@
 <div class="container-fluid">
-  <p>User works!</p>
-  <a [routerLink]="['/user/1']" routerLinkActive="router-link-active" >Details</a>
+  <ng-container *ngIf="users().length; else noData">
+    <app-my-data-table [data]="users()" [columns]="columns()" [actions]="actions()" [permissions]="userPermissions()"
+      [isFilterable]="true" [isPageable]="true" [paginationSizes]="[2,4,6]" (actionClick)="onAction($event)">
+    </app-my-data-table>
+  </ng-container>
+  <ng-template #noData>
+    <div class="empty-state">
+      <mat-icon>person_off</mat-icon>
+      <h3>No users found</h3>
+      <p>Users will appear here once added.</p>
+    </div>
+  </ng-template>
+  <a [routerLink]="['/user/1']" routerLinkActive="router-link-active">Details</a>
 </div>

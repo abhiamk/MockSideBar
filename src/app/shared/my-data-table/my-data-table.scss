@@ -1,0 +1,26 @@
+.full-width-table {
+  width: 100%;
+}
+
+.table-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-row:hover {
+  background-color: #a0a2a3;
+  cursor: pointer;
+}
+
+.mat-mdc-header-row {
+  background-color: #ECEFF1;
+}
+
+.mat-mdc-header-cell {
+  color: #263238;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.text-center {
+  text-align: center;
+}

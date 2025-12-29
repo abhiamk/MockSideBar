@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SideBarService } from '../side-bar-service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-side-bar-component',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   templateUrl: './side-bar-component.html',
   styleUrl: './side-bar-component.scss',
   animations: [
@@ -28,7 +28,7 @@ import { FormsModule } from '@angular/forms';
 export class SideBarComponent {
   menus: any[] = [];
 
-  constructor(public sideBarService: SideBarService) {
+  constructor(public sideBarService: SideBarService, private router: Router) {
     this.menus = sideBarService.getMenuList();
   }
 
@@ -66,5 +66,9 @@ export class SideBarComponent {
 
   hasBackgroundImage() {
     return this.sideBarService.hasBackgroundImage;
+  }
+
+  isActive(route: string) {
+    return this.sideBarService.isActive(route, this.router.url);
   }
 }

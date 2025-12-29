@@ -1,4 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
+import { ACTIONS, SCREENS } from '../auth/permissions.constants';
+import { SIDEBAR_MENU } from './sidebar.menu';
+import { AuthService } from '../auth/auth-service';
+import { SidebarMenu } from './sidebar.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6,143 +10,26 @@ import { Injectable, signal } from '@angular/core';
 export class SideBarService {
   toggled = signal(false);
   _hasBackgroundImage = true;
-  menus = [
-    {
-      title: 'general',
-      type: 'header'
-    },
-    {
-      title: 'Dashboard',
-      icon: 'fa fa-tachometer-alt',
-      active: false,
-      type: 'dropdown',
-      badge: {
-        text: 'New ',
-        class: 'badge-warning'
-      },
-      submenus: [
-        {
-          title: 'Dashboard 1',
-          route:'dashboard',
-          badge: {
-            text: 'Pro ',
-            class: 'badge-success'
-          }
-        },
-        {
-          title: 'Dashboard 2'
-        },
-        {
-          title: 'Dashboard 3'
-        }
-      ]
-    },
-    {
-      title: 'E-commerce',
-      icon: 'fa fa-shopping-cart',
-      active: false,
-      type: 'dropdown',
-      badge: {
-        text: '3',
-        class: 'badge-danger'
-      },
-      submenus: [
-        {
-          title: 'Products',
-        },
-        {
-          title: 'Orders'
-        },
-        {
-          title: 'Credit cart'
-        }
-      ]
-    },
-    {
-      title: 'Components',
-      icon: 'far fa-gem',
-      active: false,
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'General',
-        },
-        {
-          title: 'Panels'
-        },
-        {
-          title: 'Tables'
-        },
-        {
-          title: 'Icons'
-        },
-        {
-          title: 'Forms'
-        }
-      ]
-    },
-    {
-      title: 'Charts',
-      icon: 'fa fa-chart-line',
-      active: false,
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Pie chart',
-        },
-        {
-          title: 'Line chart'
-        },
-        {
-          title: 'Bar chart'
-        },
-        {
-          title: 'Histogram'
-        }
-      ]
-    },
-    {
-      title: 'Maps',
-      icon: 'fa fa-globe',
-      active: false,
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Google maps',
-        },
-        {
-          title: 'Open street map'
-        }
-      ]
-    },
-    {
-      title: 'Extra',
-      type: 'header'
-    },
-    {
-      title: 'Documentation',
-      icon: 'fa fa-book',
-      active: false,
-      type: 'simple',
-      badge: {
-        text: 'Beta',
-        class: 'badge-primary'
-      },
-    },
-    {
-      title: 'Calendar',
-      icon: 'fa fa-calendar',
-      active: false,
-      type: 'simple'
-    },
-    {
-      title: 'Examples',
-      icon: 'fa fa-folder',
-      active: false,
-      type: 'simple'
-    }
-  ];
-  constructor() { }
+  constructor(private auth: AuthService) { }
+
+  menus = computed<SidebarMenu[]>(() =>
+    SIDEBAR_MENU
+      .map(menu => {
+        if (menu.type === 'header') return menu;
+
+        const children = menu.children.filter(c =>
+          this.auth.hasPermission(c.screen, c.action)
+        );
+
+        return children.length ? { ...menu, children } : null;
+      })
+      .filter((m): m is SidebarMenu => m !== null)
+  );
+
+  isActive(route: string, url: string) {
+    return url.startsWith(route);
+  }
+
 
   toggle() {
     this.toggled.set(!this.toggled);
@@ -157,7 +44,7 @@ export class SideBarService {
   }
 
   getMenuList() {
-    return this.menus;
+    return this.menus();
   }
 
   get hasBackgroundImage() {
